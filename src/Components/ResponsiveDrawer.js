@@ -46,7 +46,7 @@ function ResponsiveDrawer(props) {
         {[
           { text: "Upload Image", link: "/upload-image" },
           { text: "View All Images", link: "/all" },
-          { text: "View Image", link: "/view-image" },
+          // { text: "View Image", link: "/view-image" },
         ].map((val, index) => (
           <ListItem key={val.text} disablePadding>
             <ListItemButton
