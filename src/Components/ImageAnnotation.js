@@ -2,11 +2,18 @@ import { ImageEditorComponent } from "@syncfusion/ej2-react-image-editor";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { Browser } from "@syncfusion/ej2-base";
 import React from "react";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Typography, Modal } from "@mui/material";
 import styled from "styled-components";
 import { ArrowRightAltOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 /*
     This portion has not been made responsive
@@ -27,11 +34,26 @@ export default class ImageAnnotation extends React.Component {
   y;
   constructor(props) {
     super(props);
+    const { navigate, handleOpen, handleClose, prediction, setPrediction } =
+      this.props;
+    this.navigate = navigate;
     this.state = {
       annotations: {},
       labels: {},
     };
   }
+
+  style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
 
   async componentDidMount() {
     let response = await axios
@@ -94,22 +116,27 @@ export default class ImageAnnotation extends React.Component {
         if (response.status == 200) {
           toast.success("Generated predictions using YoloV5");
           let anns = response.data[0];
+          let preds = [];
           console.log(anns);
           for (let i = 0; i <= anns.length - 1; i++) {
             console.log(anns[i]);
             let bbox = anns[i]["bbox"];
             let ratio_x = this.width / anns[i]["original_w"];
             let ratio_y = this.height / anns[i]["original_h"];
-
+            let x = {};
+            x.bbox = bbox;
+            x.label = anns[i]["label"];
             console.log(anns[i]);
+            preds.push(x);
             this.imgObj.drawRectangle(bbox[0], bbox[1], bbox[2], bbox[3]);
           }
+          this.props.setPrediction(preds);
+          this.props.handleOpen();
         }
       });
   }
 
   async deleteImage(e) {
-    const { navigate } = this.props;
     await axios
       .delete(
         process.env.REACT_APP_BASE_URL +
@@ -119,7 +146,7 @@ export default class ImageAnnotation extends React.Component {
       .then((response) => {
         if (response.status == 200) {
           toast.success(response.data.message);
-          navigate("/all");
+          this.props.navigate("/all");
         }
       })
       .catch((err) => {
@@ -196,6 +223,48 @@ export default class ImageAnnotation extends React.Component {
   render() {
     return (
       <div className="e-img-editor-sample">
+        <Modal
+          keepMounted
+          open={this.props.open}
+          onClose={this.props.handleClose}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-describedby="keep-mounted-modal-description"
+        >
+          <Box sx={this.style}>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Label</TableCell>
+                    <TableCell align="right">x</TableCell>
+                    <TableCell align="right">y</TableCell>
+                    <TableCell align="right">w</TableCell>
+                    <TableCell align="right">h</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.props.prediction &&
+                    this.props.prediction.map((row) => (
+                      <TableRow
+                        key={row.label}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.label}
+                        </TableCell>
+                        <TableCell align="right">{row.bbox[0]}</TableCell>
+                        <TableCell align="right">{row.bbox[1]}</TableCell>
+                        <TableCell align="right">{row.bbox[2]}</TableCell>
+                        <TableCell align="right">{row.bbox[3]}</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Modal>
         <ImageEditorComponent
           shapeChanging={(e) => {
             console.log(this.state);
