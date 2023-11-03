@@ -14,6 +14,7 @@ import ResponsiveDrawer from "./Components/ResponsiveDrawer";
 import Home from "./Pages/Home";
 import UploadImage from "./Pages/UploadImage";
 import ViewImage from "./Pages/ViewImage";
+import ViewAllImages from "./Pages/ViewAllImages";
 
 const darkTheme = createTheme({
   palette: {
@@ -62,6 +63,14 @@ function App() {
             element={
               <ProtectedRoute user={user} redirectPath="/">
                 {<ViewImage />}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/all"
+            element={
+              <ProtectedRoute user={user} redirectPath="/">
+                {<ViewAllImages />}
               </ProtectedRoute>
             }
           />
