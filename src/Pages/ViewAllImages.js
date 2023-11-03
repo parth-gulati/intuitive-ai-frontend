@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import StandardImageList from "../Components/ImageList";
 
-const ViewAllImages = () => {
+const ViewAllImages = ({selectImage}) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -41,7 +41,7 @@ const ViewAllImages = () => {
     >
       <Typography sx={{textAlign: "center", marginBottom: 1}} variant="h2">View All Images</Typography>
       {loading && <CircularProgress sx={{marginTop: 10}} />}
-      {images && <StandardImageList images={images} />}
+      {images && <StandardImageList selectImage={selectImage} images={images} />}
     </Container>
   );
 };

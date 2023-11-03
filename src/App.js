@@ -9,7 +9,7 @@ import { Routes, Route, Link, Navigate } from "react-router-dom";
 import Unauthorised from "./Pages/Unauthorised";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import UserContext, { UserProvider } from "./Components/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import ResponsiveDrawer from "./Components/ResponsiveDrawer";
 import Home from "./Pages/Home";
 import UploadImage from "./Pages/UploadImage";
@@ -25,6 +25,7 @@ const darkTheme = createTheme({
 function App() {
   //real authentication with jWT not included, but can be extended - left for later
   const { user, setUser } = useContext(UserContext);
+  const [image, selectImage] = useState(null);
   console.log(setUser);
   console.log(user);
   useEffect(() => {
@@ -54,7 +55,7 @@ function App() {
             path="/upload-image"
             element={
               <ProtectedRoute user={user} redirectPath="/">
-                {<UploadImage />}
+                {<UploadImage selectImage={selectImage} />}
               </ProtectedRoute>
             }
           />
@@ -62,7 +63,7 @@ function App() {
             path="/view-image"
             element={
               <ProtectedRoute user={user} redirectPath="/">
-                {<ViewImage />}
+                {<ViewImage selectImage={selectImage} image={image} />}
               </ProtectedRoute>
             }
           />
@@ -70,7 +71,7 @@ function App() {
             path="/all"
             element={
               <ProtectedRoute user={user} redirectPath="/">
-                {<ViewAllImages />}
+                {<ViewAllImages selectImage={selectImage} />}
               </ProtectedRoute>
             }
           />

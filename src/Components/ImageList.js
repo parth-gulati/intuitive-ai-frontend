@@ -3,15 +3,22 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { Button } from "@mui/material";
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 
-export default function StandardImageList({ images }) {
-  console.log(images);
+export default function StandardImageList({ images, selectImage }) {
+  const navigate = useNavigate();
 
   return (
     <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
       {images.map((item) => (
-        <Button sx={{ height: "250px" }}>
-          <ImageListItem key={item.img}>
+        <Button
+          onClick={() => {
+            selectImage(item);
+            navigate("/view-image");
+          }}
+          sx={{ height: "250px" }}
+        >
+          <ImageListItem key={item.filename}>
             <img
               height="164px"
               width="164px"
@@ -26,4 +33,3 @@ export default function StandardImageList({ images }) {
     </ImageList>
   );
 }
-
