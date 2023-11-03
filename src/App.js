@@ -44,7 +44,7 @@ function App() {
           <Route
             path="/home"
             element={
-              <ProtectedRoute user={user} redirectPath="/login">
+              <ProtectedRoute user={user} redirectPath="/">
                 {<Home />}
               </ProtectedRoute>
             }
@@ -52,7 +52,7 @@ function App() {
           <Route
             path="/upload-image"
             element={
-              <ProtectedRoute user={user} redirectPath="/login">
+              <ProtectedRoute user={user} redirectPath="/">
                 {<UploadImage />}
               </ProtectedRoute>
             }
@@ -60,7 +60,7 @@ function App() {
           <Route
             path="/view-image"
             element={
-              <ProtectedRoute user={user} redirectPath="/login">
+              <ProtectedRoute user={user} redirectPath="/">
                 {<ViewImage />}
               </ProtectedRoute>
             }

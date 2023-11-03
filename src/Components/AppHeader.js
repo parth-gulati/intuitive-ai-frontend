@@ -6,7 +6,6 @@ import ResponsiveDrawer from "./ResponsiveDrawer";
 
 const AppHeader = ({ user, setUser }) => {
   let navigate = useNavigate();
-  console.log(user);
   return (
     <>
       <AppBar position="static">
@@ -28,7 +27,7 @@ const AppHeader = ({ user, setUser }) => {
           )}
         </Toolbar>
       </AppBar>
-      {user && <ResponsiveDrawer />}
+      {user && <ResponsiveDrawer setUser={setUser} user={user} />}
     </>
   );
 };

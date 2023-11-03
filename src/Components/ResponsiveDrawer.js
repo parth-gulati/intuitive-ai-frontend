@@ -2,6 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -18,15 +19,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"), {
-    noSsr: true,
-  });
+  const isMobile = useMediaQuery("(max-width:600px)");
   const { window } = props;
+  const { user, setUser } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -34,6 +35,8 @@ function ResponsiveDrawer(props) {
   };
 
   const navigate = useNavigate();
+
+  console.log(isMobile);
 
   const drawer = (
     <div>
@@ -88,13 +91,25 @@ function ResponsiveDrawer(props) {
               <MenuIcon />
             </IconButton>
             <Typography
-              sx={{ fontWeight: "light" }}
+              sx={{ fontWeight: "light", flexGrow: 1 }}
               variant="h6"
               noWrap
               component="div"
             >
               Annotate-It
             </Typography>
+            {user && (
+              <Button
+                onClick={() => {
+                  localStorage.removeItem("user");
+                  setUser(null);
+                  toast.success("Successfully logged out");
+                  navigate("/");
+                }}
+              >
+                Logout
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       )}
