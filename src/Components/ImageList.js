@@ -9,7 +9,7 @@ export default function StandardImageList({ images, selectImage }) {
   const navigate = useNavigate();
 
   return (
-    <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+    <ImageList sx={{ width: 500 }} cols={3} rowHeight={164}>
       {images.map((item) => (
         <Button
           onClick={() => {
