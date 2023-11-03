@@ -102,14 +102,28 @@ export default class ImageAnnotation extends React.Component {
             let ratio_y = this.height / anns[i]["original_h"];
 
             console.log(anns[i]);
-            this.imgObj.drawRectangle(
-              bbox[0],
-              bbox[1],
-              bbox[2],
-              bbox[3]
-            );
+            this.imgObj.drawRectangle(bbox[0], bbox[1], bbox[2], bbox[3]);
           }
         }
+      });
+  }
+
+  async deleteImage(e) {
+    const { navigate } = this.props;
+    await axios
+      .delete(
+        process.env.REACT_APP_BASE_URL +
+          "/delete-image/" +
+          this.props.image.filename
+      )
+      .then((response) => {
+        if (response.status == 200) {
+          toast.success(response.data.message);
+          navigate("/all");
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
       });
   }
 
@@ -211,6 +225,12 @@ export default class ImageAnnotation extends React.Component {
             cssClass="e-info"
             content="Get Predictions"
             onClick={this.getPredictions.bind(this)}
+          />
+          <ButtonComponent
+            style={{ marginLeft: 20 }}
+            cssClass="e-info"
+            content="Delete Image"
+            onClick={this.deleteImage.bind(this)}
           />
         </StyledDiv>
         <div>

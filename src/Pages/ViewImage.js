@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import ImageAnnotation from "../Components/ImageAnnotation";
 import { Box, Container, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ViewImage = ({ image }) => {
+  const navigate = useNavigate();
   console.log(image);
   return (
     <StyledDiv>
@@ -13,7 +15,7 @@ const ViewImage = ({ image }) => {
         Draw Annotations
       </Typography>
       <Box sx={{ marginLeft: 30 }}>
-        {image && <ImageAnnotation image={image} />}
+        {image && <ImageAnnotation navigate={navigate} image={image} />}
       </Box>
     </StyledDiv>
   );

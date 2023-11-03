@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import StandardImageList from "../Components/ImageList";
 
-const ViewAllImages = ({selectImage}) => {
+const ViewAllImages = ({ selectImage }) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -39,9 +39,21 @@ const ViewAllImages = ({selectImage}) => {
         alignItems: "center",
       }}
     >
-      <Typography sx={{textAlign: "center", marginBottom: 1}} variant="h2">View All Images</Typography>
-      {loading && <CircularProgress sx={{marginTop: 10}} />}
-      {images && <StandardImageList selectImage={selectImage} images={images} />}
+      <Typography sx={{ textAlign: "center", marginBottom: 2 }} variant="h2">
+        View All Images
+      </Typography>
+      {!loading && (
+        <Typography
+          sx={{ textAlign: "center", marginBottom: 1 }}
+          variant="body1"
+        >
+          Click on any image below to start annotation :) 
+        </Typography>
+      )}
+      {loading && <CircularProgress sx={{ marginTop: 10 }} />}
+      {images && (
+        <StandardImageList selectImage={selectImage} images={images} />
+      )}
     </Container>
   );
 };
